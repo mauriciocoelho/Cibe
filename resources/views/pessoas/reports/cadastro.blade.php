@@ -103,7 +103,7 @@
                                             @if($register->avatar == '')
                                                 <img src="images/user-default.png" width="150" height="150" align="left">
                                             @else
-                                                <img src="('storage/pessoas/'.$register->avatar" width="150" height="150" align="left"> 
+                                                <img src="'storage/pessoas/'.$register->avatar" width="150" height="150" align="left"> 
                                             @endif                                                            
                                         </div>
                                         <div class="form-group col-md-6">

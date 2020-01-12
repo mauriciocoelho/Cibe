@@ -32,7 +32,7 @@
                             <option value="Pago">Pago</option>                    
                         </select>
                     </div>
-                    <input type="text" name="evento_id" id="id-input">
+                    <input type="hidden" name="evento_id" id="id-input">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancelar') }}</button>

@@ -33,18 +33,23 @@
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
+                                    <form action="/irmas" method="get" role="search">
+                                        <div class="col-md-8">                                       
+                                            <input class="form-control" placeholder="Buscar por Nome..." name="search" style="width: 100%">
+                                        </div>
+                                    </form>
                                     <a href="{{route('irmas.create')}}" class="btn btn-success btn-sm">
                                         <i class="fa fa-plus white"></i> {{ __('Novo') }}
                                     </a>
                                     <span class="dropdown">
-                                    <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="btn btn-warning dropdown-toggle dropdown-menu-right btn-sm">
-                                        <i class="fa fa-cloud-download white"></i>
-                                    </button>
-                                    <ul aria-labelledby="btnSearchDrop1" class="dropdown-menu mt-1 dropdown-menu-left">
-                                        <li><a href="{{ route('irmas.export') }}" class="dropdown-item"><i class="fa fa-file-excel-o"></i> {{ __('Excel') }}</a></li>
-                                        <li><a href="#" class="table-action-btn" data-toggle="modal" title="Imprimir" data-target="#ModalPrint"><i class="fa fa-file-pdf-o"> {{ __('PDF') }}</i></a>                       
-                                    </ul>
-                                </span>
+                                        <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="btn btn-warning dropdown-toggle dropdown-menu-right btn-sm">
+                                            <i class="fa fa-cloud-download white"></i>
+                                        </button>
+                                        <ul aria-labelledby="btnSearchDrop1" class="dropdown-menu mt-1 dropdown-menu-left">
+                                            <li><a href="{{ route('irmas.export') }}" class="dropdown-item"><i class="fa fa-file-excel-o"></i> {{ __('Excel') }}</a></li>
+                                            <li><a href="#" class="table-action-btn" data-toggle="modal" title="Imprimir" data-target="#ModalPrint"><i class="fa fa-file-pdf-o"> {{ __('PDF') }}</i></a>                       
+                                        </ul>
+                                    </span>                                    
                                 </div>
                                 <div class="panel-body">
                                     <div class="row">
@@ -68,10 +73,10 @@
                                                                 <td>{{$register->celular}}</td>
                                                                 <td>{{$register->congregacao->name}}</td>
                                                                 <td>
-                                                                    <a data-tt="tooltip" data-placement="top" title="" href="{{route('irmas.edit', $register->id)}}" data-original-title="Editar" class="table-action-btn"><i class="ion-edit"></i></a>
+                                                                    <a data-tt="tooltip" data-placement="top" title="" href="{{route('irmas.editar', $register->id)}}" data-original-title="Editar" class="table-action-btn"><i class="ion-edit"></i></a>
                                                                     <a data-tt="tooltip" data-placement="top" title="" href="#" data-original-title="Excluir" class="table-action-btn" data-toggle="modal" title="Excluir" data-target="#ModalDelete"
                                                                         data-whateverid="{{$register->id}}"
-                                                                        data-whateverbank="{{$register->name}}"><i class="ion-trash-a" style="color: #ED3237"></i>
+                                                                        data-whatevername="{{$register->name}}"><i class="ion-trash-a" style="color: #ED3237"></i>
                                                                     </a>      
                                                                     <a data-tt="tooltip" data-placement="top" title="" href="{{route('cadastroirmas.pdf', $register->id)}}" data-original-title="Imprimir" class="table-action-btn"><i class="ion-android-printer" style="color: gray"></i></a>                                                          
                                                                 </td>
@@ -102,7 +107,7 @@
             </div> <!-- content -->
 
             <footer class="footer text-right">
-                2015 © Moltran.
+                2020 © Cibe Porto Nacional.
             </footer>
 
         </div>

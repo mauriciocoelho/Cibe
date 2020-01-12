@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PessoaExport;
 use App\Pessoa;
 use App\Congregacao;
+use App\Log;
 
 class PessoaController extends Controller
 {
@@ -16,17 +17,30 @@ class PessoaController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $registers = Pessoa::where([
-            'status' => 'Ativo'
-        ])->paginate(10);
-
         $congregacoes = Congregacao::where([
             'status' => 'Ativo'
         ])->get();
+
+        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
         
-        return view('pessoas.index', compact('registers','congregacoes'));
+        $aniversarios = Pessoa::where([
+            'status' => 'Ativo'
+        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
+
+        if ($request->search == ""){
+            $registers = Pessoa::where([
+                'status' => 'Ativo'
+            ])->orderBy('name', 'asc')->paginate(10);            
+            return view('pessoas.index',compact('registers','congregacoes','logs','aniversarios'));
+        }else{
+            $registers = Pessoa::where(['status' => 'Ativo'])
+            ->where('name', 'LIKE', '%' .$request->search . '%')
+            ->orderBy('name', 'asc')->paginate(10);
+            $registers->appends($request->only('pessoas.index'));
+            return view('pessoas.index',compact('registers','congregacoes','logs','aniversarios'));
+        }
     }
 
     public function create()
@@ -34,8 +48,14 @@ class PessoaController extends Controller
         $congregacoes = Congregacao::where([
             'status' => 'Ativo'
         ])->get();
+
+        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
+
+        $aniversarios = Pessoa::where([
+            'status' => 'Ativo'
+        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
         
-        return view('pessoas.form', compact('congregacoes'));
+        return view('pessoas.form', compact('congregacoes','logs','aniversarios'));
     }
 
     public function store(Request $request)
@@ -83,6 +103,13 @@ class PessoaController extends Controller
 
             $register->save();
 
+            $register = new Log;  
+            $register->user_id          = Auth::user()->id;
+            $register->acao             = 'Cadastro';
+            $register->descricao        = 'criou o cadastro de ' .$request->name;
+
+            $register->save();
+
             if ($register->save()) {
                 $request->session()->flash('success', 'Irmã cadastrada com sucesso!');
             } else {
@@ -122,22 +149,107 @@ class PessoaController extends Controller
         return redirect()->route('irmas.index');
     }
 
-    public function edit($id)
+    public function editar($id)
     {
         $congregacoes = Congregacao::where([
             'status' => 'Ativo'
         ])->get();
 
         $registers = Pessoa::where([
-            'status' => 'Ativo'
+            'status' => 'Ativo',
+            'id' => $id
         ])->get();
+
+        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
+
+        $aniversarios = Pessoa::where([
+            'status' => 'Ativo'
+        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
         
-        return view('pessoas.edit', compact('congregacoes','registers'));
+        return view('pessoas.edit', compact('congregacoes','registers','logs','aniversarios'));
     }
 
-    public function update(Request $request, $id)
+    public function edit(Request $request, $id)
     {
-        //
+        // Define o valor default para a variável que contém o nome da imagem 
+        $nameFile = null;
+ 
+        // Verifica se informou o arquivo e se é válido
+        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
+            
+            // Define um aleatório para o arquivo baseado no timestamps atual
+            $name = uniqid(date('HisYmd'));
+    
+            // Recupera a extensão do arquivo
+            $extension = $request->avatar->extension();
+    
+            // Define finalmente o nome
+            $nameFile = "{$name}.{$extension}";
+    
+            // Faz o upload:
+            $upload = $request->avatar->storeAs('public/pessoas', $nameFile);
+            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/pessoas/nomedinamicoarquivo.extensao
+    
+            $register = Pessoa::findOrFail($request->id);  
+            $register->user_id          = Auth::user()->id; 
+            $register->congregacao_id   = $request->congregacao_id;     
+            $register->name             = $request->name;
+            $register->cpf              = $request->cpf;
+            $register->rg               = $request->rg;
+            $register->matricula        = $request->matricula;
+            $register->logradouro       = $request->logradouro;     
+            $register->numero           = $request->numero;
+            $register->bairro           = $request->bairro;
+            $register->cidade           = $request->cidade;
+            $register->uf               = $request->uf;
+            $register->cep              = $request->cep;
+            $register->email            = $request->email;     
+            $register->fone             = $request->fone;
+            $register->celular          = $request->celular;
+            $register->data_nascimento  = $request->data_nascimento;
+            $register->situacao         = $request->situacao;
+            $register->avatar           = $nameFile;
+            $register->status           = 'Ativo';
+
+            $register->save();
+
+            if ($register->save()) {
+                $request->session()->flash('success', 'Irmã cadastrada com sucesso!');
+            } else {
+                $request->session()->flash('error', 'Erro cadastrar a irmã');
+            }
+    
+        } else {
+            $register = Pessoa::findOrFail($request->id);  
+            $register->user_id          = Auth::user()->id;
+            $register->congregacao_id   = $request->congregacao_id;     
+            $register->name             = $request->name;
+            $register->cpf              = $request->cpf;
+            $register->rg               = $request->rg;
+            $register->matricula        = $request->matricula;
+            $register->logradouro       = $request->logradouro;     
+            $register->numero           = $request->numero;
+            $register->bairro           = $request->bairro;
+            $register->cidade           = $request->cidade;
+            $register->uf               = $request->uf;
+            $register->cep              = $request->cep;
+            $register->email            = $request->email;     
+            $register->fone             = $request->fone;
+            $register->celular          = $request->celular;
+            $register->data_nascimento  = $request->data_nascimento;
+            $register->situacao         = $request->situacao;
+            $register->status           = 'Ativo';
+
+            $register->save();
+
+            if ($register->save()) {
+                $request->session()->flash('success', 'Irmã alterada com sucesso!');
+            } else {
+                $request->session()->flash('error', 'Erro alterar o cadastro da irmã');
+            }
+        }
+
+        return redirect()->route('irmas.index');
     }
 
     public function inativar(Request $request, $id)

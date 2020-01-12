@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'CibePorto | Cadastro de Irmãs')
+@section('title', 'CibePorto | Editar Irmã')
 
 @section('content')
     
@@ -15,18 +15,17 @@
                     <!-- Page-Title -->
                     <div class="row">
                         <div class="col-sm-12">
-                            <h4 class="pull-left page-title">{{ __('Cadastro de Irmãs') }}</h4>
+                            <h4 class="pull-left page-title">{{ __('Editar Irmã') }}</h4>
                             <ol class="breadcrumb pull-right">
                                 <li><a href="{{route('home')}}">{{ __('Home') }}</a></li>
                                 <li><a href="{{route('irmas.index')}}">{{ __('Irmãs') }}</a></li>
-                                <li class="active">{{ __('Cadastro Irmãs') }}</li>
+                                <li class="active">{{ __('Editar Irmã') }}</li>
                             </ol>
                         </div>
                     </div>
-
-                    <form action="{{route('irmas.store')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        @foreach($registers as $register)
+                    @foreach($registers as $register)
+                        <form action="{{route('irmas.edit', $register->id)}}" method="post" enctype="multipart/form-data">
+                            @csrf                         
                             <div class="col-sm-12">
                                 <div class="panel panel-default">
                                     <div class="panel-heading"><h3 class="panel-title">{{ __('Dados Cadastrais') }}</h3></div>
@@ -34,7 +33,11 @@
                                         <div class="row">
                                             <div class="form-group col-md-2">
                                                 <label>{{ __('Foto') }}</label>
-                                                <img src="{{asset('app-assets/images/user-default.png')}}" alt="image" class="img-responsive">
+                                                @if($register->avatar == '')
+                                                    <img src="{{asset('app-assets/images/user-default.png')}}" alt="image" class="img-responsive">
+                                                @else
+                                                    <img src="{{asset('storage/pessoas/'.$register->avatar)}}" alt="image" class="img-responsive">
+                                                @endif    
                                                 <input type="file" name="avatar">                                 
                                             </div>
                                             <div class="form-group col-md-6">
@@ -46,15 +49,15 @@
                                         <div class="row">
                                             <div class="form-group col-md-3">
                                                 <label>{{ __('CPF') }}</label>
-                                                <input type="text" class="form-control" name="cpf" placeholder="CPF">
+                                                <input type="text" class="form-control" name="cpf" value="{{$register->cpf}}">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>{{ __('RG') }}</label>
-                                                <input type="text" class="form-control" name="rg" placeholder="RG">
+                                                <input type="text" class="form-control" name="rg" value="{{$register->rg}}">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>{{ __('Data de Nascimento') }}</label>
-                                                <input type="date" class="form-control" name="data_nascimento">
+                                                <input type="date" class="form-control" name="data_nascimento" value="{{$register->data_nascimento}}">
                                             </div>
                                         </div>
         
@@ -65,15 +68,15 @@
                                             </div>                                        
                                             <div class="form-group col-md-2">
                                                 <label>{{ __('Bairro') }}</label>
-                                                <input type="text" class="form-control" name="bairro" placeholder="Centro">
+                                                <input type="text" class="form-control" name="bairro" value="{{$register->bairro}}">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>{{ __('Cidade') }}</label>
-                                                <input type="text" class="form-control" name="cidade" placeholder="Porto Nacional">
+                                                <input type="text" class="form-control" name="cidade" value="{{$register->cidade}}">
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <label>{{ __('CEP') }}</label>
-                                                <input type="text" class="form-control" name="cep" placeholder="00.000-000">
+                                                <input type="text" class="form-control" name="cep" value="{{$register->cep}}">
                                             </div>
                                             <div class="form-group col-md-1">
                                                 <label>{{ __('UF') }}</label>
@@ -109,40 +112,30 @@
                                             </div>
                                         </div>
                     
-                                        <!--<div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label>{{ __('Fone') }}</label>
-                                                <input type="text" class="form-control" name="" placeholder="Digite o valor">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label>Campo Nove</label>
-                                                <input type="email" class="form-control" name="" placeholder="Digite o valor">
-                                            </div>
-                                        </div>-->
-                    
                                         <div class="row">
                                             <div class="form-group col-md-3">
                                                 <label>{{ __('Fone') }}</label>
-                                                <input type="text" class="form-control" name="fone" placeholder="Digite o valor">
+                                                <input type="text" class="form-control" name="fone" value="{{$register->fone}}">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>{{ __('Celular') }}</label>
-                                                <input type="text" class="form-control" name="celular" placeholder="Digite o valor">
+                                                <input type="text" class="form-control" name="celular" value="{{$register->celular}}">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>{{ __('Email') }}</label>
-                                                <input type="text" class="form-control" name="email" placeholder="Digite o valor">
+                                                <input type="text" class="form-control" name="email" value="{{$register->email}}">
                                             </div>
                                         </div>
                     
                                         <div class="row">
                                             <div class="form-group col-md-3">
                                                 <label>{{ __('Matrícula') }}</label>
-                                                <input type="text" class="form-control" name="matricula" placeholder="Digite o valor">
+                                                <input type="text" class="form-control" name="matricula" value="{{$register->matricula}}">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>{{ __('Congregação') }}</label>
                                                 <select class="form-control" name="congregacao_id">
+                                                    
                                                     @foreach($congregacoes as $congregacao)
                                                         <option value="{{ $congregacao->id }}">{{ $congregacao->name }}</option>
                                                     @endforeach
@@ -151,6 +144,7 @@
                                             <div class="form-group col-md-3">
                                                 <label>{{ __('Situação') }}</label>
                                                 <select class="form-control select2" name="situacao" style="width: 100%;">
+                                                    <option value="{{$register->situacao}}">{{$register->situacao}}</option>
                                                     <option value="Membro">Membro</option>
                                                     <option value="Diaconiza">Diaconiza</option>
                                                     <option value="Missionária">Missionária</option>
@@ -160,26 +154,22 @@
                                 
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <a href="{{route('irmas.index')}}"><input type="button" value="Sair" class="btn btn-default"></a>
-                                                <button type="submit" class="btn btn-success" id="add-row">Salvar</button>
+                                                <a href="{{route('irmas.index')}}"><input type="button" value="Voltar" class="btn btn-default"></a>
+                                                <button type="submit" class="btn btn-warning" id="add-row">Editar</button>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    
-                                                                    
+                                    </div>               
                                     
                                 </div> <!-- panel panel-default -->
-                            </div> <!-- col-sm-12 -->
-                        @endforeach
-                    </form>
-
+                            </div> <!-- col-sm-12 -->                           
+                        </form>
+                    @endforeach
                 </div> <!-- container -->
                                 
             </div> <!-- content -->
 
             <footer class="footer text-right">
-                2015 © Moltran.
+                2020 © Cibe Porto Nacional.
             </footer>
 
         </div>

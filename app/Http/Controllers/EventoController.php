@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Evento;
 use App\EventoDetails;
 use App\Pessoa;
+use App\Log;
 
 class EventoController extends Controller
 {
@@ -20,12 +21,14 @@ class EventoController extends Controller
         $registers = Evento::where([
             'status' => 'Ativo'
         ])->paginate(10);
-        return view('eventos.index', compact('registers'));
-    }
+        
+        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
 
-    public function create()
-    {
-        //
+        $aniversarios = Pessoa::where([
+            'status' => 'Ativo'
+        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
+
+        return view('eventos.index', compact('registers','logs','aniversarios'));
     }
 
     public function store(Request $request)
@@ -60,9 +63,15 @@ class EventoController extends Controller
             'status' => 'Ativo'
         ])->get();
 
+        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
+
+        $aniversarios = Pessoa::where([
+            'status' => 'Ativo'
+        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
+
         $evento_id = $id;
 
-        return view('eventos.lancamento', compact('registers','pessoas','evento_id'));
+        return view('eventos.lancamento', compact('registers','pessoas','evento_id','logs','aniversarios'));
     }
 
     public function lancar(Request $request)

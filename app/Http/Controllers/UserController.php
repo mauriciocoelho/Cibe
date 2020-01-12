@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\Log;
+use App\Pessoa;
 
 class UserController extends Controller
 {
@@ -20,13 +22,25 @@ class UserController extends Controller
         $registers = User::where([
             'status' => 'Ativo'
         ])->paginate(10);
+
+        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
+
+        $aniversarios = Pessoa::where([
+            'status' => 'Ativo'
+        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
         
-        return view('users.index', compact('registers'));
+        return view('users.index', compact('registers','logs','aniversarios'));
     }
     
     public function create()
     {
-        return view('users.register');
+        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
+
+        $aniversarios = Pessoa::where([
+            'status' => 'Ativo'
+        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
+
+        return view('users.register',compact('logs','aniversarios'));
     }    
 
     public function store(Request $request)
@@ -87,7 +101,13 @@ class UserController extends Controller
 
     public function profile()
     {
-        return view('profile');
+        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
+
+        $aniversarios = Pessoa::where([
+            'status' => 'Ativo'
+        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
+
+        return view('profile',compact('logs','aniversaios'));
     }
 
     public function profileupdate(Request $request)
