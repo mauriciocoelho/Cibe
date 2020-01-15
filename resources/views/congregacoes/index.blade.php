@@ -15,10 +15,10 @@
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title">{{ __('Congregações') }}</h4>
+                        <h4 class="pull-left page-title">{{ __('Congregations') }}</h4>
                         <ol class="breadcrumb pull-right">
                             <li><a href="{{route('home')}}">{{ __('Home') }}</a></li>
-                            <li class="active">{{ __('Congregação') }}</li>
+                            <li class="active">{{ __('Congregation') }}</li>
                         </ol>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <a href="#" class="btn btn-success btn-sm" data-toggle="modal" data-target="#ModalAdd">
-                                    <i class="fa fa-plus white"></i> {{ __('Novo') }}
+                                    <i class="fa fa-plus white"></i> {{ __('New') }}
                                 </a>                                
                             </div>
                             <div class="panel-body">
@@ -45,8 +45,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th>{{ __('#') }}</th>
-                                                        <th>{{ __('Congregação') }}</th>
-                                                        <th>{{ __('Ação') }}</th>
+                                                        <th>{{ __('Congregation') }}</th>
+                                                        <th>{{ __('Action') }}</th>
                                                     </tr>
                                                 </thead>
                                                 @foreach ($registers as $register)                                                    

@@ -34,7 +34,7 @@
                                         <div class="form-group col-md-2">
                                             <label>{{ __('Foto') }}</label>
                                             <img src="{{asset('app-assets/images/user-default.png')}}" alt="image" class="img-responsive">
-                                            <input type="file" name="avatar">                                 
+                                            <input type="file" class="form-control" name="avatar">                                 
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>{{ __('Nome Completo') }}</label>
@@ -122,22 +122,22 @@
                                     <div class="row">
                                         <div class="form-group col-md-3">
                                             <label>{{ __('Fone') }}</label>
-                                            <input type="text" class="form-control" name="fone" placeholder="Digite o valor">
+                                            <input type="text" class="form-control" name="fone" placeholder="(63)3363-0000">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label>{{ __('Celular') }}</label>
-                                            <input type="text" class="form-control" name="celular" placeholder="Digite o valor">
+                                            <input type="text" class="form-control" name="celular" placeholder="(63)90000-0000">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label>{{ __('Email') }}</label>
-                                            <input type="text" class="form-control" name="email" placeholder="Digite o valor">
+                                            <input type="text" class="form-control" name="email" placeholder="email@email.com">
                                         </div>
                                     </div>
                 
                                     <div class="row">
                                         <div class="form-group col-md-3">
                                             <label>{{ __('Matrícula') }}</label>
-                                            <input type="text" class="form-control" name="matricula" placeholder="Digite o valor">
+                                            <input type="text" class="form-control" name="matricula" placeholder="Matricula">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label>{{ __('Congregação') }}</label>

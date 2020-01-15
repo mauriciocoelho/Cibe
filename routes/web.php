@@ -24,6 +24,8 @@ Route::group(['prefix'], function(){
     Route::get('profile', 'UserController@profile')->name('profile.index');
     Route::post('profile', 'UserController@profileupdate')->name('profile.update');
     Route::resource('usuarios', 'UserController');
+    Route::get('usuarios/editar/{id}', 'UserController@editar')->name('usuarios.editar');
+    Route::post('usuarios/edit/{id}', 'UserController@edit')->name('usuarios.edit');
     Route::post('usuarios/inativar/{id}','UserController@inativar')->name('usuarios.inativar');
 });
 
@@ -33,6 +35,7 @@ Route::group(['prefix'], function(){
     Route::post('eventos/pagar/{id}','EventoController@pagar')->name('eventos.pagar');
     Route::post('eventos/lancar','EventoController@lancar')->name('eventos.lancar');
     Route::post('eventos/inativarLance/{id}','EventoController@inativarLance')->name('eventos.inativarlance');
-
+    Route::get('exportlancamento', 'EventoController@export')->name('evento.export');
+    Route::post('RelatorioEventoPDF/{evento_id}', 'EventoController@pdf')->name('evento.pdf');
 });
 

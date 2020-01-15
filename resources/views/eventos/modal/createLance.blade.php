@@ -22,7 +22,7 @@
                         <label>{{ __('Tipo') }}</label>
                         <select class="form-control" name="tipo">
                             <option value="Inscrição">Inscrição</option> 
-                            <option value="Incrição/Ônibus">Incrição/Ônibus</option>
+                            <option value="Inscrição/Ônibus">Inscrição/Ônibus</option>
                         </select>
                     </div>
                     <div class="form-group">

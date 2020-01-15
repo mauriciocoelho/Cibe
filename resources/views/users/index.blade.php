@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'CibePorto | Usuários')
+@section('title', 'CibePorto | Users')
 
 @section('content')
     
@@ -15,10 +15,10 @@
                     <!-- Page-Title -->
                     <div class="row">
                         <div class="col-sm-12">
-                            <h4 class="pull-left page-title">{{ __('Usuários') }}</h4>
+                            <h4 class="pull-left page-title">{{ __('Users') }}</h4>
                             <ol class="breadcrumb pull-right">
                                 <li><a href="{{route('home')}}">{{ __('Home') }}</a></li>
-                                <li class="active">{{ __('Usuários') }}</li>
+                                <li class="active">{{ __('Users') }}</li>
                             </ol>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <a href="{{route('usuarios.create')}}" class="btn btn-success btn-sm">
-                                        <i class="fa fa-plus white"></i> {{ __('Novo') }}
+                                        <i class="fa fa-plus white"></i> {{ __('New') }}
                                     </a>
                                     <!--<span class="dropdown">
                                         <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="btn btn-warning dropdown-toggle dropdown-menu-right btn-sm">
@@ -54,10 +54,10 @@
                                                     <thead>
                                                         <tr>
                                                             <th>{{ __('#') }}</th>
-                                                            <th>{{ __('Foto') }}</th>
-                                                            <th>{{ __('Nome Completo') }}</th>
-                                                            <th>{{ __('Eamil') }}</th>
-                                                            <th>{{ __('Ação') }}</th>
+                                                            <th>{{ __('Photograph') }}</th>
+                                                            <th>{{ __('Name Complete') }}</th>
+                                                            <th>{{ __('Email') }}</th>
+                                                            <th>{{ __('Action') }}</th>
                                                         </tr>
                                                     </thead>
                                                     @foreach ($registers as $register)                                                    
@@ -74,7 +74,7 @@
                                                                 <td>{{$register->name}}</td>
                                                                 <td>{{$register->email}}</td>                                                                
                                                                 <td>
-                                                                    <a data-tt="tooltip" data-placement="top" title="" href="{{route('irmas.edit', $register->id)}}" data-original-title="Editar" class="table-action-btn"><i class="ion-edit"></i></a>
+                                                                    <a data-tt="tooltip" data-placement="top" title="" href="{{route('usuarios.editar', $register->id)}}" data-original-title="Editar" class="table-action-btn"><i class="ion-edit"></i></a>
                                                                     <a data-tt="tooltip" data-placement="top" title="" href="#" data-original-title="Excluir" class="table-action-btn" data-toggle="modal" title="Excluir" data-target="#ModalDelete"
                                                                         data-whateverid="{{$register->id}}"
                                                                         data-whateverbank="{{$register->name}}"><i class="ion-trash-a" style="color: #ED3237"></i>

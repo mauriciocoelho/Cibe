@@ -3,7 +3,11 @@
         <div class="sidebar-inner slimscrollleft">
             <div class="user-details">
                 <div class="pull-left">
-                    <img src="images/users/avatar-1.jpg" alt="" class="thumb-md img-circle">
+                    @if (Auth::user()->avatar  == '')
+                        <img src="{{asset('app-assets/images/uploads/users/user-default.png')}}" alt="" class="thumb-md img-circle">
+                    @else
+                        <img src="{{asset('app-assets/images/uploads/users/'.Auth::user()->avatar )}}" alt="" class="thumb-md img-circle">
+                    @endif
                 </div>
                 <div class="user-info">
                     <div class="dropdown">
@@ -25,20 +29,20 @@
             <div id="sidebar-menu">
                 <ul>
                     <li>
-                        <a href="{{route('home')}}" class="waves-effect"><i class="md md-home"></i><span> {{ __('Início') }} </span></a>
+                        <a href="{{route('home')}}" class="waves-effect"><i class="md md-home"></i><span> {{ __('Start') }} </span></a>
                     </li>
 
                     <li class="has_sub">
-                        <a href="#" class="waves-effect"><i class="md md-content-paste"></i><span> {{ __('Cadastros') }} </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                        <a href="#" class="waves-effect"><i class="md md-content-paste"></i><span> {{ __('Entries') }} </span><span class="pull-right"><i class="md md-add"></i></span></a>
                         <ul class="list-unstyled">
-                            <li><a href="{{route('congregacoes.index')}}">{{ __('Congregações') }}</a></li>
-                            <li><a href="{{route('irmas.index')}}">{{ __('Irmãs') }}</a></li>
-                            <li><a href="{{route('usuarios.index')}}">{{ __('Usuários') }}</a></li>
+                            <li><a href="{{route('congregacoes.index')}}">{{ __('Congregations') }}</a></li>
+                            <li><a href="{{route('irmas.index')}}">{{ __('Sisters') }}</a></li>
+                            <!--<li><a href="{{route('usuarios.index')}}">{{ __('Users') }}</a></li>-->
                         </ul>
                     </li>
 
                     <li>
-                        <a href="{{route('eventos.index')}}" class="waves-effect"><i class="md md-event"></i><span> {{ __('Eventos') }} </span></a>
+                        <a href="{{route('eventos.index')}}" class="waves-effect"><i class="md md-event"></i><span> {{ __('Events') }} </span></a>
                     </li>
 
                     <!--<li>
@@ -59,11 +63,11 @@
                             <li><a href="notification.html">Notification</a></li>
                             <li><a href="sweet-alert.html">Sweet-Alert</a></li>
                         </ul>
-                    </li>-->
+                    </li> -->
 
-                    <li>
-                        <a href="{{route('home')}}" class="waves-effect"><i class="md md-settings"></i><span> {{ __('Configurações') }} </span></a>
-                    </li>
+                    <!--<li>
+                        <a href="" class="waves-effect"><i class="md md-settings"></i><span> {{ __('Settings') }} </span></a>
+                    </li>-->
 
                 </ul>
                 <div class="clearfix"></div>

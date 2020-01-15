@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Pessoa;
+use App\EventoDetails;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -10,27 +10,26 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class PessoaExport implements FromCollection, WithMapping, WithHeadings, WithTitle, ShouldAutoSize
+class EventoExport implements FromCollection, WithMapping, WithHeadings, WithTitle, ShouldAutoSize
 {
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        return Pessoa::where([
+        return EventoDetails::where([
             'status' => 'Ativo'
         ])->get();
     }
 
     //Coluns add
-    public function map($irmas): array
+    public function map($evento): array
     {
         return [
-            $irmas->id,
-            $irmas->name,            
-            $irmas->congregacao->name,
-            date("m", strtotime($irmas->data_nascimento)),
-            $irmas->situacao,
+            $evento->id,
+            $evento->pessoa->name,            
+            $evento->tipo,
+            $evento->status_evento,
         ];
     }
 
@@ -40,16 +39,14 @@ class PessoaExport implements FromCollection, WithMapping, WithHeadings, WithTit
         return [
             '#',
             'Nome Completo',
-            'Congregação',
-            'Mês',
-            'Situação',
+            'Tipo',
+            'Status',
         ];
     }
 
     //Title
     public function title(): string
     {
-        return 'Lista de Irmãs';
+        return 'Relatório de Evento';
     }
-
 }

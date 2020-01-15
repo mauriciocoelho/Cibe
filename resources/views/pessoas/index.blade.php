@@ -15,10 +15,10 @@
                     <!-- Page-Title -->
                     <div class="row">
                         <div class="col-sm-12">
-                            <h4 class="pull-left page-title">{{ __('Irmãs') }}</h4>
+                            <h4 class="pull-left page-title">{{ __('Sisters') }}</h4>
                             <ol class="breadcrumb pull-right">
                                 <li><a href="{{route('home')}}">{{ __('Home') }}</a></li>
-                                <li class="active">{{ __('Irmãs') }}</li>
+                                <li class="active">{{ __('Sisters') }}</li>
                             </ol>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                                         </div>
                                     </form>
                                     <a href="{{route('irmas.create')}}" class="btn btn-success btn-sm">
-                                        <i class="fa fa-plus white"></i> {{ __('Novo') }}
+                                        <i class="fa fa-plus white"></i> {{ __('New') }}
                                     </a>
                                     <span class="dropdown">
                                         <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="btn btn-warning dropdown-toggle dropdown-menu-right btn-sm">
@@ -59,10 +59,10 @@
                                                     <thead>
                                                         <tr>
                                                             <th>{{ __('#') }}</th>
-                                                            <th>{{ __('Nome Completo') }}</th>
-                                                            <th>{{ __('Celular') }}</th>
-                                                            <th>{{ __('Congregação') }}</th>
-                                                            <th>{{ __('Ação') }}</th>
+                                                            <th>{{ __('Name Complete') }}</th>
+                                                            <th>{{ __('Mobile') }}</th>
+                                                            <th>{{ __('Congregation') }}</th>
+                                                            <th>{{ __('Action') }}</th>
                                                         </tr>
                                                     </thead>
                                                     @foreach ($registers as $register)                                                    

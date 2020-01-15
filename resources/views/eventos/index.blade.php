@@ -15,10 +15,10 @@
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title">{{ __('Eventos') }}</h4>
+                        <h4 class="pull-left page-title">{{ __('Events') }}</h4>
                         <ol class="breadcrumb pull-right">
                             <li><a href="{{route('home')}}">{{ __('Home') }}</a></li>
-                            <li class="active">{{ __('Eventos') }}</li>
+                            <li class="active">{{ __('Events') }}</li>
                         </ol>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <a href="#" class="btn btn-success btn-sm" data-toggle="modal" data-target="#ModalAdd">
-                                    <i class="fa fa-plus white"></i> {{ __('Novo') }}
+                                    <i class="fa fa-plus white"></i> {{ __('New') }}
                                 </a>   
                                 <!--<span class="dropdown">
                                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="btn btn-warning dropdown-toggle dropdown-menu-right btn-sm">
@@ -54,10 +54,10 @@
                                                 <thead>
                                                     <tr>
                                                         <th>{{ __('#') }}</th>
-                                                        <th>{{ __('Evento') }}</th>
-                                                        <th>{{ __('Local') }}</th>
-                                                        <th>{{ __('Data') }}</th>
-                                                        <th>{{ __('Ação') }}</th>
+                                                        <th>{{ __('Event') }}</th>
+                                                        <th>{{ __('Locality') }}</th>
+                                                        <th>{{ __('Date') }}</th>
+                                                        <th>{{ __('Action') }}</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>

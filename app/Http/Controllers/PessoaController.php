@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 use App\Exports\PessoaExport;
 use App\Pessoa;
 use App\Congregacao;
-use App\Log;
 
 class PessoaController extends Controller
 {
@@ -23,23 +24,17 @@ class PessoaController extends Controller
             'status' => 'Ativo'
         ])->get();
 
-        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
-        
-        $aniversarios = Pessoa::where([
-            'status' => 'Ativo'
-        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
-
         if ($request->search == ""){
             $registers = Pessoa::where([
                 'status' => 'Ativo'
             ])->orderBy('name', 'asc')->paginate(10);            
-            return view('pessoas.index',compact('registers','congregacoes','logs','aniversarios'));
+            return view('pessoas.index',compact('registers','congregacoes'));
         }else{
             $registers = Pessoa::where(['status' => 'Ativo'])
             ->where('name', 'LIKE', '%' .$request->search . '%')
             ->orderBy('name', 'asc')->paginate(10);
             $registers->appends($request->only('pessoas.index'));
-            return view('pessoas.index',compact('registers','congregacoes','logs','aniversarios'));
+            return view('pessoas.index',compact('registers','congregacoes'));
         }
     }
 
@@ -48,39 +43,18 @@ class PessoaController extends Controller
         $congregacoes = Congregacao::where([
             'status' => 'Ativo'
         ])->get();
-
-        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
-
-        $aniversarios = Pessoa::where([
-            'status' => 'Ativo'
-        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
         
-        return view('pessoas.form', compact('congregacoes','logs','aniversarios'));
+        return view('pessoas.form', compact('congregacoes'));
     }
 
     public function store(Request $request)
     {
-        
-        // Define o valor default para a variável que contém o nome da imagem 
-        $nameFile = null;
- 
-        // Verifica se informou o arquivo e se é válido
-        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
-            
-            // Define um aleatório para o arquivo baseado no timestamps atual
-            $name = uniqid(date('HisYmd'));
-    
-            // Recupera a extensão do arquivo
-            $extension = $request->avatar->extension();
-    
-            // Define finalmente o nome
-            $nameFile = "{$name}.{$extension}";
-    
-            // Faz o upload:
-            $upload = $request->avatar->storeAs('public/pessoas', $nameFile);
-            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/pessoas/nomedinamicoarquivo.extensao
-    
-            $register = new Pessoa;  
+        if($request->hasFile('avatar')){
+    		$avatar = $request->file('avatar');
+    		$filename = time() . '.' . $avatar->getClientOriginalExtension();
+    		Image::make($avatar)->resize(300, 300)->save( public_path('app-assets/images/uploads/pessoas/' . $filename ) );
+
+    		$register = new Pessoa;  
             $register->user_id          = Auth::user()->id; 
             $register->congregacao_id   = $request->congregacao_id;     
             $register->name             = $request->name;
@@ -98,15 +72,8 @@ class PessoaController extends Controller
             $register->celular          = $request->celular;
             $register->data_nascimento  = $request->data_nascimento;
             $register->situacao         = $request->situacao;
-            $register->avatar           = $nameFile;
+            $register->avatar           = $filename;
             $register->status           = 'Ativo';
-
-            $register->save();
-
-            $register = new Log;  
-            $register->user_id          = Auth::user()->id;
-            $register->acao             = 'Cadastro';
-            $register->descricao        = 'criou o cadastro de ' .$request->name;
 
             $register->save();
 
@@ -115,8 +82,7 @@ class PessoaController extends Controller
             } else {
                 $request->session()->flash('error', 'Erro cadastrar a irmã');
             }
-    
-        } else {
+    	}else{
             $register = new Pessoa;  
             $register->user_id          = Auth::user()->id; 
             $register->congregacao_id   = $request->congregacao_id;     
@@ -144,7 +110,7 @@ class PessoaController extends Controller
             } else {
                 $request->session()->flash('error', 'Erro cadastrar a irmã');
             }
-        }
+        }   
 
         return redirect()->route('irmas.index');
     }
@@ -159,38 +125,18 @@ class PessoaController extends Controller
             'status' => 'Ativo',
             'id' => $id
         ])->get();
-
-        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
-
-        $aniversarios = Pessoa::where([
-            'status' => 'Ativo'
-        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
         
-        return view('pessoas.edit', compact('congregacoes','registers','logs','aniversarios'));
+        return view('pessoas.edit', compact('congregacoes','registers'));
     }
 
     public function edit(Request $request, $id)
     {
-        // Define o valor default para a variável que contém o nome da imagem 
-        $nameFile = null;
- 
-        // Verifica se informou o arquivo e se é válido
-        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
-            
-            // Define um aleatório para o arquivo baseado no timestamps atual
-            $name = uniqid(date('HisYmd'));
-    
-            // Recupera a extensão do arquivo
-            $extension = $request->avatar->extension();
-    
-            // Define finalmente o nome
-            $nameFile = "{$name}.{$extension}";
-    
-            // Faz o upload:
-            $upload = $request->avatar->storeAs('public/pessoas', $nameFile);
-            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/pessoas/nomedinamicoarquivo.extensao
-    
-            $register = Pessoa::findOrFail($request->id);  
+        if($request->hasFile('avatar')){
+    		$avatar = $request->file('avatar');
+    		$filename = time() . '.' . $avatar->getClientOriginalExtension();
+    		Image::make($avatar)->resize(300, 300)->save( public_path('app-assets/images/uploads/pessoas/' . $filename ) );
+
+    		$register = Pessoa::findOrFail($request->id);  
             $register->user_id          = Auth::user()->id; 
             $register->congregacao_id   = $request->congregacao_id;     
             $register->name             = $request->name;
@@ -208,18 +154,17 @@ class PessoaController extends Controller
             $register->celular          = $request->celular;
             $register->data_nascimento  = $request->data_nascimento;
             $register->situacao         = $request->situacao;
-            $register->avatar           = $nameFile;
+            $register->avatar           = $filename;
             $register->status           = 'Ativo';
 
             $register->save();
 
             if ($register->save()) {
-                $request->session()->flash('success', 'Irmã cadastrada com sucesso!');
+                $request->session()->flash('success', 'Irmã alterada com sucesso!');
             } else {
-                $request->session()->flash('error', 'Erro cadastrar a irmã');
+                $request->session()->flash('error', 'Erro alterar o cadastro da irmã');
             }
-    
-        } else {
+    	}else{
             $register = Pessoa::findOrFail($request->id);  
             $register->user_id          = Auth::user()->id;
             $register->congregacao_id   = $request->congregacao_id;     
@@ -248,6 +193,7 @@ class PessoaController extends Controller
                 $request->session()->flash('error', 'Erro alterar o cadastro da irmã');
             }
         }
+
 
         return redirect()->route('irmas.index');
     }

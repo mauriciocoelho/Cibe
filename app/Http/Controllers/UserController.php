@@ -23,13 +23,7 @@ class UserController extends Controller
             'status' => 'Ativo'
         ])->paginate(10);
 
-        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
-
-        $aniversarios = Pessoa::where([
-            'status' => 'Ativo'
-        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
-        
-        return view('users.index', compact('registers','logs','aniversarios'));
+        return view('users.index', compact('registers'));
     }
     
     public function create()
@@ -44,31 +38,16 @@ class UserController extends Controller
     }    
 
     public function store(Request $request)
-    {        
-        // Define o valor default para a variável que contém o nome da imagem 
-        $nameFile = null;
- 
-        // Verifica se informou o arquivo e se é válido
-        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) 
-        {
-            
-            // Define um aleatório para o arquivo baseado no timestamps atual
-            $name = uniqid(date('HisYmd'));
-    
-            // Recupera a extensão do arquivo
-            $extension = $request->avatar->extension();
-    
-            // Define finalmente o nome
-            $nameFile = "{$name}.{$extension}";
-    
-            // Faz o upload:
-            $upload = $request->avatar->storeAs('public/users', $nameFile);
-            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/pessoas/nomedinamicoarquivo.extensao
+    {
+        if($request->hasFile('avatar')){
+    		$avatar = $request->file('avatar');
+    		$filename = time() . '.' . $avatar->getClientOriginalExtension();
+    		Image::make($avatar)->resize(300, 300)->save( public_path('app-assets/images/uploads/users/' . $filename ) );
     
             $register = new User;    
             $register->name             = $request->name;
             $register->email            = $request->email;
-            $register->password         = bcrypt($request->password);
+            $register->password         = Hash::make($request->password);
             $register->avatar           = $nameFile;
             $register->status           = 'Ativo';
 
@@ -84,7 +63,7 @@ class UserController extends Controller
             $register = new User;    
             $register->name             = $request->name;
             $register->email            = $request->email;
-            $register->password         = bcrypt($request->password);
+            $register->password         = Hash::make($request->password);
             $register->status           = 'Ativo';
 
             $register->save();
@@ -99,15 +78,60 @@ class UserController extends Controller
         return redirect()->route('usuarios.index');
     }
 
+    public function editar($id)
+    {
+        $registers = User::where([
+            'status' => 'Ativo',
+            'id' => $id
+        ])->get();
+        
+        return view('users.edit', compact('registers'));
+    }
+
+    public function edit(Request $request, $id)
+    {
+        if($request->hasFile('avatar')){
+    		$avatar = $request->file('avatar');
+    		$filename = time() . '.' . $avatar->getClientOriginalExtension();
+    		Image::make($avatar)->resize(300, 300)->save( public_path('app-assets/images/uploads/users/' . $filename ) );
+    
+            $register = User::findOrFail($request->id);  
+            $register->name             = $request->name;
+            $register->email            = $request->email;
+            $register->password         = Hash::make($request->password);
+            $register->avatar           = $nameFile;
+            $register->status           = 'Ativo';
+
+            $register->save();
+
+            if ($register->save()) {
+                $request->session()->flash('success', 'Usuário alterado com sucesso!');
+            } else {
+                $request->session()->flash('error', 'Erro alterar o usuário');
+            }
+    
+        } else {
+            $register = User::findOrFail($request->id);  
+            $register->name             = $request->name;
+            $register->email            = $request->email;
+            $register->password         = Hash::make($request->password);
+            $register->status           = 'Ativo';
+
+            $register->save();
+
+            if ($register->save()) {
+                $request->session()->flash('success', 'Usuário alterado com sucesso!');
+            } else {
+                $request->session()->flash('error', 'Erro alterar o usuário');
+            }
+        }
+
+        return redirect()->route('usuarios.index');
+    }
+
     public function profile()
     {
-        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
-
-        $aniversarios = Pessoa::where([
-            'status' => 'Ativo'
-        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
-
-        return view('profile',compact('logs','aniversaios'));
+        return view('profile');
     }
 
     public function profileupdate(Request $request)
@@ -115,7 +139,7 @@ class UserController extends Controller
         if($request->hasFile('avatar')){
     		$avatar = $request->file('avatar');
     		$filename = time() . '.' . $avatar->getClientOriginalExtension();
-    		Image::make($avatar)->resize(300, 300)->save( public_path('/storage/users/' . $filename ) );
+    		Image::make($avatar)->resize(300, 300)->save( public_path('app-assets/images/uploads/users/' . $filename ) );
 
     		$user = Auth::user();
     		$user->avatar = $filename;

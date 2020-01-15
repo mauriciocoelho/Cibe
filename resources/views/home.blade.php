@@ -15,10 +15,10 @@
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title">{{ __('Seja Bem-vindo !') }}</h4>
+                        <h4 class="pull-left page-title">{{ __('Welcome !') }}</h4>
                         <ol class="breadcrumb pull-right">
                             <li><a href="#">{{ __('Cibe') }}</a></li>
-                            <li class="active">{{ __('Início') }}</li>
+                            <li class="active">{{ __('Start') }}</li>
                         </ol>
                     </div>
                 </div>

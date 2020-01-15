@@ -34,11 +34,11 @@
                                             <div class="form-group col-md-2">
                                                 <label>{{ __('Foto') }}</label>
                                                 @if($register->avatar == '')
-                                                    <img src="{{asset('app-assets/images/user-default.png')}}" alt="image" class="img-responsive">
+                                                    <img src="{{asset('app-assets/images/uploads/users/user-default.png')}}" alt="image" class="img-responsive">
                                                 @else
-                                                    <img src="{{asset('storage/pessoas/'.$register->avatar)}}" alt="image" class="img-responsive">
+                                                    <img src="{{asset('app-assets/images/uploads/pessoas/'.$register->avatar )}}" alt="image" class="img-responsive">
                                                 @endif    
-                                                <input type="file" name="avatar">                                 
+                                                <input type="file" class="form-control" name="avatar">                                 
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>{{ __('Nome Completo') }}</label>

@@ -42,8 +42,8 @@
                                         <i class="fa fa-cloud-download white"></i>
                                     </button>
                                     <ul aria-labelledby="btnSearchDrop1" class="dropdown-menu mt-1 dropdown-menu-left">
-                                        <li><a href="#" class="dropdown-item"><i class="fa fa-file-excel-o"></i> {{ __('Excel') }}</a></li>
-                                        <li><a href="#" class="dropdown-item"><i class="fa fa-file-pdf-o"></i> {{ __('PDF') }}</a></li>
+                                        <li><a href="{{ route('evento.export') }}" class="dropdown-item"><i class="fa fa-file-excel-o"></i> {{ __('Excel') }}</a></li>
+                                        <li><a href="#" class="table-action-btn" data-toggle="modal" title="Imprimir" data-target="#ModalPrint"><i class="fa fa-file-pdf-o"> {{ __('PDF') }}</i></a>                       
                                     </ul>
                                 </span>
                             </div>
@@ -114,7 +114,8 @@
 
     </div> <!-- content-page -->
 
-    @include ('eventos.modal.createLance');
+    @include ('eventos.modal.createLance')
+    @include ('eventos.modal.imprimir')
 
     <script>
         var resizefunc = [];

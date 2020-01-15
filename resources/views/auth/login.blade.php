@@ -6,9 +6,12 @@
         <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
         <meta name="author" content="Coderthemes">
 
-        <link rel="shortcut icon" href="images/favicon_1.ico">
+        <!-- Fvicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="{{asset('app-assets/images/favicon//apple-touch-icon.png')}}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{asset('app-assets/images/favicon//favicon-32x32.png')}}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{asset('app-assets/images/favicon//favicon-16x16.png')}}">
 
-        <title>Moltran - Responsive Admin Dashboard Template</title>
+        <title>CibePorto - Login</title>
 
         <!-- Base Css Files -->
         <link href="{{asset('app-assets/css/bootstrap.min.css')}}" rel="stylesheet" />
@@ -95,23 +98,23 @@
                     
                     <div class="form-group text-center m-t-40">
                         <div class="col-xs-12">
-                            <button class="btn btn-success btn-lg w-lg waves-effect waves-light" type="submit">
+                            <button class="btn btn-pink btn-lg w-lg waves-effect waves-light" type="submit">
                                 {{ __('Login') }}
                             </button>
                         </div>
                     </div>
 
                     <div class="form-group m-t-30">
-                        <div class="col-sm-7">
+                        <!--<div class="col-sm-7">
                             @if (Route::has('password.request'))
                                 <a href="{{ route('password.request') }}"><i class="fa fa-lock m-r-5"></i> 
                                     {{ __('Forgot Your Password?') }}
                                 </a>
                             @endif
-                        </div>
-                        <div class="col-sm-5 text-right">
+                        </div>-->
+                        <!--<div class="col-sm-5 text-right">
                             <a href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </div>
+                        </div>-->
                     </div>
                 </form> 
                 </div>                                 

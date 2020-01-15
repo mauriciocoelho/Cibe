@@ -17,4 +17,9 @@ class EventoDetails extends Model
     {
         return $this->belongsTo('App\Pessoa', 'pessoa_id', 'id');
     }
+
+    public function congregacao()
+    {
+        return $this->belongsTo('App\Congregacao', 'congregacao_id', 'id');
+    }
 }

@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EventoExport;
+use Carbon\Carbon;
 use App\Evento;
 use App\EventoDetails;
 use App\Pessoa;
-use App\Log;
 
 class EventoController extends Controller
 {
@@ -21,14 +23,8 @@ class EventoController extends Controller
         $registers = Evento::where([
             'status' => 'Ativo'
         ])->paginate(10);
-        
-        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
 
-        $aniversarios = Pessoa::where([
-            'status' => 'Ativo'
-        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
-
-        return view('eventos.index', compact('registers','logs','aniversarios'));
+        return view('eventos.index', compact('registers'));
     }
 
     public function store(Request $request)
@@ -63,21 +59,15 @@ class EventoController extends Controller
             'status' => 'Ativo'
         ])->get();
 
-        $logs = Log::orderBy('created_at', 'desc')->paginate(3);
-
-        $aniversarios = Pessoa::where([
-            'status' => 'Ativo'
-        ])->whereMonth('data_nascimento', '=', date('m'))->orderBy('name', 'asc')->get();
-
         $evento_id = $id;
 
-        return view('eventos.lancamento', compact('registers','pessoas','evento_id','logs','aniversarios'));
+        return view('eventos.lancamento', compact('registers','pessoas','evento_id'));
     }
 
     public function lancar(Request $request)
     {
         $register = new EventoDetails;  
-        $register->user_id          = Auth::user()->id; 
+        $register->user_id          = Auth::user()->id;
         $register->evento_id        = $request->evento_id;  
         $register->pessoa_id        = $request->pessoa_id;
         $register->tipo             = $request->tipo;
@@ -125,12 +115,6 @@ class EventoController extends Controller
         return back();
     }
 
-
-    public function edit($id)
-    {
-        //
-    }
-
     public function update(Request $request, $id)
     {
         $update = Evento::findOrFail($request->id);  
@@ -163,5 +147,74 @@ class EventoController extends Controller
         }
 
         return back();
+    }
+
+    public function export()
+    {
+        return Excel::download(new EventoExport(), 'RelatorioEvento.xlsx');
+    }
+
+    public function pdf(Request $request)
+    {
+        $geral       = $request->geral;
+        $pago        = $request->pago;
+        $apagar      = $request->apagar;
+        
+        $gerals = EventoDetails::where([
+            'status' => 'Ativo',
+            'evento_id' => $request->evento_id
+        ])->get();
+
+        $countRegister = EventoDetails::where([
+            'status' => 'Ativo',
+            'evento_id' => $request->evento_id
+        ])->count();
+
+        $pagos = EventoDetails::where([
+            'status' => 'Ativo',
+            'status_evento' => 'Pago',
+            'evento_id' => $request->evento_id
+        ])->get();
+
+        $countPago = EventoDetails::where([
+            'status' => 'Ativo',
+            'status_evento' => 'Pago',
+            'evento_id' => $request->evento_id
+        ])->count();
+
+        $apagars = EventoDetails::where([
+            'status' => 'Ativo',
+            'status_evento' => 'á Pagar',
+            'evento_id' => $request->evento_id
+        ])->get();
+
+        $countApagars = EventoDetails::where([
+            'status' => 'Ativo',
+            'status_evento' => 'á Pagar',
+            'evento_id' => $request->evento_id
+        ])->count();        
+       
+        
+        if ($geral)
+        {
+            return \PDF::loadView('eventos.reports.geral', compact('gerals','countRegister'))
+                        // Se quiser que fique no formato a4 retrato: 
+                            ->setPaper('A4', 'portrait')
+                            ->stream('RelatorioEventoGeral.pdf');
+                    // ->download('RelatorioEvento.pdf');
+        } elseif ($pago) {
+            return \PDF::loadView('eventos.reports.pago', compact('pagos','countPago'))
+                        // Se quiser que fique no formato a4 retrato: 
+                            ->setPaper('A4', 'portrait')
+                            ->stream('RelatorioEventoPago.pdf');
+                    // ->download('RelatorioEvento.pdf');
+        } else {
+            return \PDF::loadView('eventos.reports.apagar', compact('apagars','countApagars'))
+                        // Se quiser que fique no formato a4 retrato: 
+                            ->setPaper('A4', 'portrait')
+                            ->stream('RelatorioEventoAPagar.pdf');
+                    // ->download('RelatorioEvento.pdf');
+        }
+            
     }
 }

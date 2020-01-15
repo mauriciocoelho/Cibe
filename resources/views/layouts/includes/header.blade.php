@@ -3,7 +3,7 @@
         <!-- LOGO -->
         <div class="topbar-left">
             <div class="text-center">
-                <a href="" class="logo"><i class="md md-terrain"></i> <span>{{ __('Cibe') }} </span></a>
+            <a href="{{route('home')}}" class="logo img-circle"><i class="icon-c-logo"><img src="{{asset('app-assets/images/logo-cibe.png')}}" width="30"></i> <span>{{ __('Cibe') }} </span></a>
             </div>
         </div>
         <!-- Button mobile view to collapse sidebar menu -->
@@ -24,63 +24,62 @@
                     </form>-->
 
                     <ul class="nav navbar-nav navbar-right pull-right">
-                        <li class="dropdown hidden-xs">
+                        <!--<li class="dropdown hidden-xs">
                             <a href="#" data-target="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
                                 <i class="md md-notifications"></i> <span class="badge badge-xs badge-danger"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-lg">
-                                <li class="text-center notifi-title">{{ __('Notificações') }}</li>
+                                <li class="text-center notifi-title">{{ __('Notifications') }}</li>
                                 <li class="list-group">
-                                    <!-- list item-->
-                                    @foreach ($aniversarios as $aniversario)
+                                    
+                                    
                                     <a href="javascript:void(0);" class="list-group-item">
                                         <div class="media">
                                             <div class="pull-left">
                                             <em class="fa fa-birthday-cake fa-1x text-danger"></em>
                                             </div>
                                             <div class="media-body clearfix">
-                                            <div class="media-heading">{{ __('Aniversário') }}</div>                                            
+                                            <div class="media-heading">{{ __('Birthday') }}</div>                                            
                                                 <p class="m-0">
-                                                    <small><b>{{$aniversario->name}}</b> faz aniversário esse mês</small>
+                                                    <small><b></b> </small>
                                                 </p>                                            
                                             </div>
                                         </div>
                                     </a>
-                                    @endforeach
-                                    <!-- list item-->                                                                          
-                                    @foreach ($logs as $log)      
+                                                                                                              
+                                    
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <div class="media">
                                                 <div class="pull-left">
                                                 <em class="fa fa-bell-o fa-1x text-warning"></em>
                                                 </div>
                                                 <div class="media-body clearfix">
-                                                <div class="media-heading">{{$log->acao}}</div>
+                                                <div class="media-heading"></div>
                                                 <p class="m-0">
-                                                    <small>{{$log->usuario->name}}
-                                                        {{$log->descricao}}
+                                                    <small>
+                                                       
                                                     </small>
                                                 </p>
                                                 </div>
                                             </div>
                                         </a>
-                                    @endforeach
-                                    <!-- last list item -->
+                                    
+                                    
                                     <a href="javascript:void(0);" class="list-group-item">
                                         <small>{{ __('Ver todas as notificações') }}</small>
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li>-->
                         <li class="hidden-xs">
                             <a href="#" id="btn-fullscreen" class="waves-effect waves-light"><i class="md md-crop-free"></i></a>
                         </li>
                         <li class="dropdown">
                             <a href="" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true">
                                 @if (Auth::user()->avatar  == '')
-                                    <img src="{{asset('storage/users/user-default.png')}}" alt="user-img" class="img-circle">
+                                    <img src="{{asset('app-assets/images/uploads/users/user-default.png')}}" alt="user-img" class="img-circle">
                                 @else
-                                    <img src="{{asset('storage/users/'.Auth::user()->avatar )}}" alt="user-img" class="img-circle">
+                                    <img src="{{asset('app-assets/images/uploads/users/'.Auth::user()->avatar )}}" alt="user-img" class="img-circle">
                                 @endif
                             </a>
                             <ul class="dropdown-menu">

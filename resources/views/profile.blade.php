@@ -17,9 +17,9 @@
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1">
                                 @if (Auth::user()->avatar  == '')
-                                    <img src="{{asset('storage/users/user-default.png')}}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right:25px;">
+                                    <img src="{{asset('app-assets/images/uploads/users/user-default.png')}}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right:25px;">
                                 @else
-                                    <img src="{{asset('storage/users/'.Auth::user()->avatar )}}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right:25px;">
+                                    <img src="{{asset('app-assets/images/uploads/users/'.Auth::user()->avatar )}}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right:25px;">
                                 @endif
                                 <h2>{{Auth::user()->name}}'s Profile</h2>
                                 <form enctype="multipart/form-data" action="{{route('profile.update')}}" method="POST">
